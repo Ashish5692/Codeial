@@ -8,8 +8,20 @@ const router = express.Router();
 
 console.log('router loaded');
 
-router.get('/',homeController.home);
+////This router(index router) is accessing home_controller
+
+router.get('/',homeController.home); //handles home request   
+
+router.use('/users', require('./users')); //handles users request
+//FOR REFERENCE
+//for any further routes, access from here
+//router.use('/routerName', require('./routerfile'));
+
+
+
 
 //we need to export it to be available for index.js
 //we read that export and mosule.export do the same thing but here it is not doing same thing
 module.exports = router;
+
+////This router was accessing home_controller and in the index.js of the app it is saying app will be using this router
