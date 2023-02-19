@@ -18,7 +18,7 @@ router.use('/users', require('./users')); //handles users request
 //router.use('/routerName', require('./routerfile'));
 
 
-
+router.use('/users', require('./post')); //handles post request
 
 //we need to export it to be available for index.js
 //we read that export and mosule.export do the same thing but here it is not doing same thing
