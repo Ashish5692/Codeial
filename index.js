@@ -3,17 +3,26 @@ const app = express();
 const port = 8000;
 const expressLayouts = require('express-ejs-layouts');
 
+app.use(express.static('./assets'));
+
 //function defining layouts
 app.use(expressLayouts);
+
+//extract style and scripts from sub pages into the layout
+app.set('layout extractStyles',true);
+app.set('layout extractScripts', true);
 
 //use express router //another middleware
 //before the server starts up it need to use the route //routing the home part
 //do routes it bydefault fetches index
+
 app.use('/', require('./routes'));
 
 //setting up the view engine
 app.set('view engine','ejs');
 app.set('views','./views');
+
+
 
 app.listen(port,function(err){
     if(err){
