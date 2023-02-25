@@ -14,8 +14,12 @@ module.exports.profile = function(req,res){
 
 //Now adding couple of actions 
 
-//render the sign in page
+//render the sign up page
 module.exports.signUp = function(req,res){
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
+
     return res.render('user_sign_up',{
         title: "Codeial | Sign Up"
     });
@@ -23,6 +27,10 @@ module.exports.signUp = function(req,res){
 
 //render the sign in page
 module.exports.signIn = function(req,res){
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
+
     return res.render('user_sign_in',{
         title: "Codeial | Sign In"
     });
@@ -55,6 +63,20 @@ module.exports.create = function(req,res){
 }
 
 // sign in And create session for user
+//when passport.js uses local-strategy to authenticate the user comes here
 module.exports.createSession = function(req,res){
-    //TODO LATER
+    return res.redirect('/');
 }
+//session is created in passport.js
+
+//this function is given to request using passport.js  passport gives it to request
+module.exports.destroySession = function(req,res){
+    req.logout(function(err){
+        if(err){
+             console.log(err);
+         }
+        console.log("You have successfully logged out");
+         return res.redirect('/');
+     });
+}
+
