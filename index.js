@@ -14,6 +14,16 @@ const store = new MongoStore({
     uri: "mongodb://127.0.0.1/codeial_development",
     collection: "authStore"
 });
+//sass
+const sassMiddleware = require('node-sass-middleware');
+
+app.use(sassMiddleware({
+    src: './assets/scss',                      //from where to pick up the scss file for converting to css
+    dest: './assets/css', 
+    debug: true,          //info we see in terminal when server is running,,show error,, true when running in production mode
+    outputStyle: 'expanded',  //wanted mutiple line ,,for single line we do minification
+    prefix:  '/css'               //where should server look out for css files //now we are using middleware
+}));
 
 //reading the POST request
 app.use(express.urlencoded());
