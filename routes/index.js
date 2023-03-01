@@ -18,7 +18,7 @@ router.use('/users', require('./users')); //handles users request
 //router.use('/routerName', require('./routerfile'));
 
 
-router.use('/users', require('./post')); //handles post request
+router.use('/posts', require('./posts')); //now every posts in posts router will be mapped with /posts and then the route we have given in the post.js(router.post('/create', postsController.create))
 
 //we need to export it to be available for index.js
 //we read that export and mosule.export do the same thing but here it is not doing same thing

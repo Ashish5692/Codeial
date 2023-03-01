@@ -1,3 +1,37 @@
 <h1>
         Codeial /<%= title %>
 </h1>
+<section id="feed-posts">
+
+        <h4>Posts</h4>
+        <% if(locals.user) { %>
+        <!-- creating a form which corresponds to our schema -->  
+        <!-- we are sending the data and making changes to database that is creating something new i.e post request -->
+        <!-- we are not taking user id from someone who is making the post ,person to be logged in should be marked one to be creating the post-->
+        <form action="/posts/create" id = "new-post-form" method="POST">
+                <textarea name="content"  cols="30" rows="3" placeholder="Type Here.."></textarea>
+                <input type="submit" value="Post">
+        </form>
+        <%} %>
+        
+        <div id="posts-list-container">
+                <ul>
+                        <% for(post of posts){ %>
+                        <!-- list item for every post -->
+                        <li>
+                                <p>
+                                        <%= post.content %>
+                                        <br>
+                                        <%= console.log("*****",post.user.name); %>
+                                        <small>
+                                                <%= post.user.name %>
+                                                
+                                        </small>
+
+                                        
+                                </p>      
+                        </li>       
+                        <% }%>
+                </ul>
+        </div>
+</section>
