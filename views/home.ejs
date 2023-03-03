@@ -9,7 +9,7 @@
         <!-- we are sending the data and making changes to database that is creating something new i.e post request -->
         <!-- we are not taking user id from someone who is making the post ,person to be logged in should be marked one to be creating the post-->
         <form action="/posts/create" id = "new-post-form" method="POST">
-                <textarea name="content"  cols="30" rows="3" placeholder="Type Here.."></textarea>
+                <textarea name="content"  cols="30" rows="3" placeholder="Type Here.." required></textarea>
                 <input type="submit" value="Post">
         </form>
         <%} %>
@@ -20,16 +20,47 @@
                         <!-- list item for every post -->
                         <li>
                                 <p>
+                                        <!-- check - if user is signed in and its equal to the user who created the post -->
+                                        <% if (locals.user  && locals.user.id == post.user.id) { %>
+                                        <small>
+                                                <a href="/posts/destroy/<%= post.id %>">X</a>
+                                        </small>
+                                        <% } %>
                                         <%= post.content %>
                                         <br>
-                                        <%= console.log("*****",post.user.name); %>
                                         <small>
                                                 <%= post.user.name %>
                                                 
                                         </small>
+                                </p> 
+                                <div class ="post-comments">
+                                      <!--if user is present then only form will be visible-->
+                                      <% if (locals.user){ %>
+                                        <form action="/comments/create" method="POST">
+                                                <input type="text" name="content" placeholder="Type Here to add comment..." required>
+                                                
+                                                <!--  we need to send the post id at which i need to add comment to.. -->
+                                                <input type="hidden" name="post" value="<%=post._id%>">
+                                                <input type="submit" value="Add Comment">
+                                        </form>
+                                        <% } %>
 
-                                        
-                                </p>      
+                                        <div class="post-comments-list">
+                                                <ul id="post-comments-<%= post._id %>">  
+                                                        <!-- comments are inside the post -->
+                                                        <!-- we will iterate over all the comments of post and display the details   we have populated them already-->
+                                                        <% for(comment of post.comments){%>
+                                                            <p>
+                                                                <%= comment.content %>
+                                                                <br>
+                                                                <small>
+                                                                        <%= comment.user.name %>
+                                                                </small>
+                                                            </p>    
+                                                        <% } %>
+                                                </ul>
+                                        </div>
+                                </div>     
                         </li>       
                         <% }%>
                 </ul>

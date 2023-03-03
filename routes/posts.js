@@ -9,6 +9,8 @@ const postsController = require('../controllers/posts_controller');
 
 router.post('/create',passport.checkAuthentication, postsController.create); //check authentication is function we have created  
 
+//creating route for delete
+router.get('/destroy/:id', passport.checkAuthentication,postsController.destroy);
 
 //need to map a route to this post controller that is route to post action(function) which is inside controller
 
