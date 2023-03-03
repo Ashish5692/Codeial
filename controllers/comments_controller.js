@@ -25,3 +25,28 @@ module.exports.create = function(req,res){
             }
         });
 }
+
+module.exports.destroy = function(req,res){
+    //finding the comment
+    Comment.findById(req.params.id, function(err,comment){
+        if(comment.user == req.user.id){
+            //before deleting the comment we need to fetch the id of comment--go inside the post ,find the comment and delete it
+            //if yes then remove the comment
+            let postId = comment.post;  
+
+            comment.remove();
+
+            //if comment is there its post should be there
+            //i need to update the post as i am deleting one of the reference id
+            //find it by postId
+            //what need to update : we will pull out the comment id from list of comments for which we can use inbuilt function in mongoose
+            //pull throws us the id which is matching with the comment id
+            Post.findByIdAndUpdate(postId, { $pull: {comments: req.params.id}},function(err,post){
+                //doingnothing with the post 
+                return res.redirect('back');
+            })
+        }else{
+            return res.redirect('back');
+        }
+    });
+}
