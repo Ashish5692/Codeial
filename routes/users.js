@@ -8,6 +8,7 @@ const usersController = require('../controllers/users_controller');
 
 //need to map a route to this users controller that is route to profile action(function) which is inside controller
 router.get('/profile/:id', passport.checkAuthentication, usersController.profile); //Authentication is check then profile is accessible
+router.post('/update/:id', passport.checkAuthentication, usersController.update);//for updating signed in user profile
 
 router.get('/sign-up',usersController.signUp);
 router.get('/sign-in',usersController.signIn);

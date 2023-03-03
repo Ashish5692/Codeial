@@ -19,6 +19,16 @@ module.exports.profile = function(req,res){
 
 //Now adding couple of actions 
 
+module.exports.update = function(req,res){
+    if(req.user.id == req.params.id){
+        User.findByIdAndUpdate(req.params.id, req.body,function(err,user){    //req.params.id -id which i need user to be found with
+            return res.redirect('back');  //back to page from where i came from
+        });//if user does not match someone fiddling with my system
+    }else{
+        return res.status(401).send('Unauthorized');
+    }
+}
+
 //render the sign up page
 module.exports.signUp = function(req,res){
     if(req.isAuthenticated()){
