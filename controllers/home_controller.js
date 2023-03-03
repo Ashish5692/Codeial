@@ -1,5 +1,7 @@
 const Post = require('../models/post'); //referencing to the model to find all the post
 
+const User = require('../models/user'); //requiring users to get list of all users
+
 //IN THIS WE NEED TO EXPORT THE FUNCTION WHICH IS PUBLICALLY AVAILABLE TO ROUTES FILE AND THAT SHOULD RETURN SOMETHING
 
 module.exports.home = function(req,res){
@@ -26,10 +28,16 @@ module.exports.home = function(req,res){
         }
     })
     .exec(function(err,posts){
-        return res.render('home',{
-            title: "Codeial | Home",
-            posts : posts           //passing on all the post
-        }); 
+
+        //finding all users
+        User.find({}, function(err,users){
+            return res.render('home',{
+                title: "Codeial | Home",
+                posts : posts,           //passing on all the post
+                all_users: users
+            }); 
+        })
+
     })
 }
 
