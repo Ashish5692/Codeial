@@ -1,5 +1,7 @@
 const User = require('../models/user');
 
+
+//let's keep it same as before because there is no nesting level we have in this only one callback
 module.exports.profile = function(req,res){
     //locating the user
     User.findById(req.params.id, function(err,user){
@@ -18,7 +20,7 @@ module.exports.profile = function(req,res){
 
 
 //Now adding couple of actions 
-
+//let's keep it same as before because there is no nesting level we have in this only one callback
 module.exports.update = function(req,res){
     if(req.user.id == req.params.id){
         User.findByIdAndUpdate(req.params.id, req.body,function(err,user){    //req.params.id -id which i need user to be found with
