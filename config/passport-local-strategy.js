@@ -10,18 +10,20 @@ const User = require('../models/user');
 //need to tell passport to use this lcoal strategy that we have created
 
 passport.use(new LocalStrategy({
-    usernameField : 'email'                   //defining userName field in schema
-    },                                       // function inside local strategy which has email,password and done as 3 arguments
-    function(email,password,done){           //done is callback function inbuilt to passport which is reporting back to passport.js which is automatically called //done takes 2 arguments 1 one is error, 2nd something else 
+    usernameField : 'email',                   //defining userName field in schema
+    passReqToCallback: true    //it allows us to set first argument as request
+    }, 
+    //callback after the user signs in                                      // function inside local strategy which has email,password and done as 3 arguments
+    function(req, email, password, done){           //done is callback function inbuilt to passport which is reporting back to passport.js which is automatically called //done takes 2 arguments 1 one is error, 2nd something else 
         //find a user and establish the identity
         User.findOne({email,email}, function(err,user){       //email-property, 2nd email- value passed on
             if(err){
-                console.log('Error in finding user ==> Passport');
+                req.flash('error',err);
                 return done(err);   //report error to passport
             }
 
             if(!user || user.password!=password){
-                console.log('Invalid Username/Password');
+                req.flash('error','Invalid Username/Password');
                 return done(null,false);  //no error(put as null) but user is not found(authentication is false)
 
             } 
