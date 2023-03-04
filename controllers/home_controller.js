@@ -4,42 +4,92 @@ const User = require('../models/user'); //requiring users to get list of all use
 
 //IN THIS WE NEED TO EXPORT THE FUNCTION WHICH IS PUBLICALLY AVAILABLE TO ROUTES FILE AND THAT SHOULD RETURN SOMETHING
 
-module.exports.home = function(req,res){
-    // return res.end('<h1>Express is up for Codeial</h1>');
+//using async await function
+module.exports.home = async function(req,res){
+    try{
+        //populate the user of each post
+        //awaited this post to be completed
+        let posts = await Post.find({})
+        .populate('user')
+        .populate({
+            path: 'comments',
+            populate:{
+                path: 'user'
+            }
+        });
 
-    // console.log(req.cookies);
-    // res.cookie('user_id',25);
+        //awaited this user search query to be executed
+        let users = await User.find({});
 
-    //to return all the post
-    // Post.find({}, function(err,posts){
-    //     return res.render('home',{
-    //         title: "Codeial | Home",
-    //         posts : posts           //passing on all the post
-    //     });
-    // });
-
-    //populate the user of each post
-    Post.find({})
-    .populate('user')
-    .populate({
-        path: 'comments',
-        populate:{
-            path: 'user'
-        }
-    })
-    .exec(function(err,posts){
-
-        //finding all users
-        User.find({}, function(err,users){
-            return res.render('home',{
-                title: "Codeial | Home",
-                posts : posts,           //passing on all the post
-                all_users: users
-            }); 
-        })
-
-    })
+        //returned something to browser
+        return res.render('home',{
+            title: "Codeial | Home",
+            posts : posts,           //passing on all the post
+            all_users: users
+        });
+    
+    //any sort of error comes here
+    }catch(errr){
+        console.log('Error',err);
+        return;
+    }
 }
 
 
-//module.exports.actionName = Function(req,res){}
+
+
+
+
+
+//Older way of  writing where there arer callback hells
+// module.exports.home = function(req,res){
+//     // return res.end('<h1>Express is up for Codeial</h1>');
+
+//     // console.log(req.cookies);
+//     // res.cookie('user_id',25);
+
+//     //to return all the post
+//     // Post.find({}, function(err,posts){
+//     //     return res.render('home',{
+//     //         title: "Codeial | Home",
+//     //         posts : posts           //passing on all the post
+//     //     });
+//     // });
+
+//     //1st way = populate the user of each post
+//     Post.find({})
+//     .populate('user')
+//     .populate({
+//         path: 'comments',
+//         populate:{
+//             path: 'user'
+//         }
+//     })//making a callback for post.find
+//     .exec(function(err,posts){
+
+//         //finding all users //callback for exec
+//         User.find({}, function(err,users){
+//             //returning to browser the list of all users and list of posts along with the title
+//             return res.render('home',{
+//                 title: "Codeial | Home",
+//                 posts : posts,           //passing on all the post
+//                 all_users: users
+//             }); 
+//         })
+
+//     })
+// }
+
+
+
+
+
+//module.exports.actionName = function(req,res){}
+
+//2nd way - using then 
+//Post.find({}).populate('comments').exec();
+
+//3rd way - 
+//let posts = Post.find({}).populate('comments').exec();
+
+//posts.then()
