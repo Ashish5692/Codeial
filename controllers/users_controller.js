@@ -82,6 +82,8 @@ module.exports.create = function(req,res){
 // sign in And create session for user
 //when passport.js uses local-strategy to authenticate the user comes here
 module.exports.createSession = function(req,res){
+    //setting up flash message
+    req.flash('success', 'Logged in successfully');
     return res.redirect('/');
 }
 //session is created in passport.js
@@ -92,7 +94,7 @@ module.exports.destroySession = function(req,res){
         if(err){
              console.log(err);
          }
-        console.log("You have successfully logged out");
+         req.flash('success', 'You Have Logged out!!');
          return res.redirect('/');
      });
 }
