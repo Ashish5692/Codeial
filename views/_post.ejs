@@ -1,10 +1,10 @@
 <!-- list item for every post -->
-<li>
+<li id="post-<%= post._id%>"> 
     <p>
             <!-- check - if user is signed in and its equal to the user who created the post -->
             <% if (locals.user  && locals.user.id == post.user.id) { %>
             <small>
-                    <a href="/posts/destroy/<%= post.id %>">X</a>
+                    <a class="delete-post-button" href="/posts/destroy/<%= post.id %>">X</a>
             </small>
             <% } %>
             <%= post.content %>
