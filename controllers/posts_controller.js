@@ -80,6 +80,16 @@ module.exports.destroy = async function(req,res){
             
             await Comment.deleteMany({post:req.params.id});
 
+            if(req.xhr){
+                console.log(req.params.id);
+                return res.status(200).json({
+                    data: {
+                        post_id: req.params.id
+                    },
+                    message: "Post deleted"
+                });
+            }
+
             req.flash('success','Post and associated comments deleted');
 
             return res.redirect('back');
@@ -89,6 +99,7 @@ module.exports.destroy = async function(req,res){
         }
         
     }catch(err){
+        console.log(err);
         req.flash('error',err);
         return res.redirect('back');
     }
