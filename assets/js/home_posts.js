@@ -20,6 +20,7 @@
                     //caling the function using jquery-it needs to be inside new post
                     //new post object has 'delete-post-button' class indside it and we are getting object for it
                     deletePost($(' .delete-post-button', newPost));  //this is how it works in jquery
+                    new PostComments(data.data.post._id);
 
                 },error: function(error){
                     console.log(error.responseText);
@@ -84,7 +85,23 @@
         });
     }//now after creating delete button i can loop over all the delete link but now we will be adding to every post that is dynamically added to the page without refereshing
 
+    let convertPostsToAjax = function(){
+        
+        $('#posts-list-container>ul>li').each(function(){
 
+            let self = $(this);
+            let deleteButton = $('.delete-post', self);
+            deletePost(deleteButton);
+
+            // get the post's id by splitting the id attribute
+            let postId = self.prop('id').split("-")[1]
+
+            console.log(postId);
+            new PostComments(postId);
+        });
+    }
+
+    convertPostsToAjax();
      
     createPost();
 }

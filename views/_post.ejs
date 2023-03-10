@@ -17,7 +17,7 @@
     <div class ="post-comments">
           <!--if user is present then only form will be visible-->
           <% if (locals.user){ %>
-            <form action="/comments/create" method="POST">
+            <form id="post-<%= post._id %>-comments-form" action="/comments/create" method="POST">
                     <input type="text" name="content" placeholder="Type Here to add comment..." required>
                     
                     <!--  we need to send the post id at which i need to add comment to.. -->

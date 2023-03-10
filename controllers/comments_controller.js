@@ -19,6 +19,20 @@ module.exports.create = async function(req,res){
             post.comments.push(comment); //Updating comment pushing to post, mongoDB will automatically fetch the id and push it 
             post.save();
 
+            if(req.xhr){
+                //similar for comments to fetch the user's id
+
+                return res.status(200).json({
+                    
+                    data: {
+                        comment: comment
+                    },
+                    message: "Post created!"
+                });
+            }
+
+            req.flash('success','Comment published!');
+
             res.redirect('/');
         }
     }catch(err){
@@ -76,10 +90,24 @@ module.exports.destroy = async function(req,res){
             //what need to update : we will pull out the comment id from list of comments for which we can use inbuilt function in mongoose
             //pull throws us the id which is matching with the comment id
             let post = Post.findByIdAndUpdate(postId, { $pull: {comments: req.params.id}});
-                //doingnothing with the post 
-                return res.redirect('back');
+
+            //send the comment id which was deleted back to the views
+            if(req.xhr){
+                return res.status(200).json({
+                    data:{
+                        comment_id : req.params.id
+                    },
+                    message: "Post deleted"
+                });
+            }
+
+            req.flash('success', 'Comment deleted!');
+
+            //doingnothing with the post 
+            return res.redirect('back');
 
         }else{
+            req.flash('error','unauthorized');
             return res.redirect('back');
         }
     }catch(err){
