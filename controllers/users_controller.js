@@ -1,5 +1,6 @@
 const User = require('../models/user');
-
+const fs = require('fs');
+const path = require('path');
 
 //let's keep it same as before because there is no nesting level we have in this only one callback
 module.exports.profile = function(req,res){
@@ -21,12 +22,49 @@ module.exports.profile = function(req,res){
 
 //Now adding couple of actions 
 //let's keep it same as before because there is no nesting level we have in this only one callback
-module.exports.update = function(req,res){
+module.exports.update = async function(req,res){
+    // if(req.user.id == req.params.id){
+    //     User.findByIdAndUpdate(req.params.id, req.body,function(err,user){    //req.params.id -id which i need user to be found with
+    //         return res.redirect('back');  //back to page from where i came from
+    //     });//if user does not match someone fiddling with my system
+    // }else{
+    //     return res.status(401).send('Unauthorized');
+    //}
     if(req.user.id == req.params.id){
-        User.findByIdAndUpdate(req.params.id, req.body,function(err,user){    //req.params.id -id which i need user to be found with
-            return res.redirect('back');  //back to page from where i came from
-        });//if user does not match someone fiddling with my system
+
+        try{
+            //find the user
+            let user = await User.findById(req.params.id);
+            User.uploadedAvatar(req, res, function(err){   //analyse the req part here and response when i have saved the user
+                if(err){
+                    console.log('*****Multer Error:',err);
+                }
+
+                    user.name = req.body.name;  //req contains the file
+                    user.email = req.body.email;
+
+                    if(req.file){
+                        
+                        if(user.avatar){
+                            //function for deleting previous avtars
+                            fs.unlinkSync(path.join(__dirname,'..', user.avatar));   //passing by validating with path module
+                        }
+
+                        //this is saving the path of the uploaded file into the avatar field in the user
+                        user.avatar = User.avatarPath + '/' + req.file.filename;
+                    }
+                    user.save();
+                    return res.redirect('back');
+            }) ;   
+
+        }catch(err){
+            req.flash('error',err);
+            return res.redirect('back');
+
+        }
+
     }else{
+        req.flash('error','Unauthorized');
         return res.status(401).send('Unauthorized');
     }
 }

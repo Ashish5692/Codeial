@@ -35,6 +35,9 @@ app.use(cookieParser());
 
 app.use(express.static('./assets'));
 
+//make the uploads path available to browser
+app.use('/uploads', express.static(__dirname + '/uploads'));//directory of index joined with uploads which means codeial/uploads is available now here
+
 //function defining layouts
 app.use(expressLayouts);
 
