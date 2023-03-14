@@ -1,7 +1,3 @@
-body #pic {
-  margin: 30px auto;
-}
-
 body form {
   display: flex;
   flex-direction: column;
@@ -14,6 +10,6 @@ body input {
   margin: 3px;
 }
 
-body .picture {
+h1 {
   text-align: center;
 }

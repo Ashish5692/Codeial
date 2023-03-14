@@ -22,6 +22,8 @@ router.use('/posts', require('./posts')); //now every posts in posts router will
 
 router.use('/comments',require('./comments'));//comments router is being required
 
+router.use('/api', require('./api'));
+
 //we need to export it to be available for index.js
 //we read that export and mosule.export do the same thing but here it is not doing same thing
 module.exports = router;
