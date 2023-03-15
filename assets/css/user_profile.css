@@ -17,3 +17,7 @@ body input {
 body .picture {
   text-align: center;
 }
+
+body #naam {
+  text-align: center;
+}
