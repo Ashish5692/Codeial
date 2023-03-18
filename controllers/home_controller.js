@@ -7,7 +7,7 @@ const User = require('../models/user'); //requiring users to get list of all use
 //using async await function
 module.exports.home = async function(req,res){
     try{
-        //populate the user of each post
+        //populate the user of each post  //found out all the post from inside the database
         //awaited this post to be completed
         let posts = await Post.find({})
         .sort('-createdAt') //prepending by this latest post will be at top

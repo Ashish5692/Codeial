@@ -3,6 +3,6 @@ const express = require('express'); //everytime i do require express it will not
 
 const router = express.Router();
 
-//router.use('/v1',require('./v1'));
+router.use('/v1',require('./v1')); //defining v1
 
 module.exports = router;
