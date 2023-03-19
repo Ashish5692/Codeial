@@ -9,6 +9,7 @@ const session = require('express-session');
 //for authentication passport 
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
+const passportJWT = require('./config/passport-jwt-strategy');
 const MongoStore = require('connect-mongodb-session')(session);
 const store = new MongoStore({
     uri: "mongodb://127.0.0.1/codeial_development",
