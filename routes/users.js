@@ -30,4 +30,7 @@ router.post('/create-session',passport.authenticate(
 
 router.get('/sign-out',usersController.destroySession);
 
+router.get('/auth/google', passport.authenticate('google',{scope: ['profile','email']}));   //scope is info we are looking to fetch //email is not part of profile so take it seperately
+router.get('/auth/google/callback',passport.authenticate('google', {failureRedirect: '/users/sign-in'}), usersController.createSession) ; //this is url at which i will receive the data and it will first go through midddleware then passport.authenticate  //usersController.createSession redirecting to home page
+
 module.exports = router;
