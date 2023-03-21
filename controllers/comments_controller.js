@@ -1,5 +1,6 @@
 const Comment = require('../models/comment');//using schema of comment
 const Post = require('../models/post');   //accessing the post model
+const commentsMailer = require('../mailers/comments_mailer');
 
 //using async await
 //here 2 things are done 1.post is being found then commment is found
@@ -19,8 +20,19 @@ module.exports.create = async function(req,res){
             post.comments.push(comment); //Updating comment pushing to post, mongoDB will automatically fetch the id and push it 
             post.save();
 
+
+            comment = await comment.populate([{
+                path: 'user',
+                select: 'name'
+            },{
+                path: 'user',
+                select: 'email'
+            }]);//populate user everytime
+
+            commentsMailer.newComment(comment);
             if(req.xhr){
                 //similar for comments to fetch the user's id
+                
 
                 return res.status(200).json({
                     
