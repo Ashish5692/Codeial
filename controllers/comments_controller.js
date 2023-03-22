@@ -1,7 +1,9 @@
 const Comment = require('../models/comment');//using schema of comment
 const Post = require('../models/post');   //accessing the post model
 const commentsMailer = require('../mailers/comments_mailer');
-
+const commentsEmailWorker = require('../workers/comment_email_worker');
+const queue = require('../config/kue');
+const commentEmailWorker = require('../workers/comment_email_worker');
 //using async await
 //here 2 things are done 1.post is being found then commment is found
 //2.after creating commnet and allocating it to post, we are adding that comment id in post list of comment ids
@@ -29,7 +31,17 @@ module.exports.create = async function(req,res){
                 select: 'email'
             }]);//populate user everytime
 
-            commentsMailer.newComment(comment);
+            //commentsMailer.newComment(comment);
+
+            //given name job as every task i put inside queue is a job
+            let job = queue.create('emails', comment).save(function(err){
+                if(err){
+                    console.log('error in sending to a queue',err);
+                    return;
+                }
+                console.log('job enqueued',job.id); //when anything is enqueued that id will be over here
+            });
+
             if(req.xhr){
                 //similar for comments to fetch the user's id
                 
