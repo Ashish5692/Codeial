@@ -4,6 +4,7 @@ const commentsMailer = require('../mailers/comments_mailer');
 const commentsEmailWorker = require('../workers/comment_email_worker');
 const queue = require('../config/kue');
 const commentEmailWorker = require('../workers/comment_email_worker');
+const Like = require('../models/like');
 //using async await
 //here 2 things are done 1.post is being found then commment is found
 //2.after creating commnet and allocating it to post, we are adding that comment id in post list of comment ids
@@ -114,6 +115,9 @@ module.exports.destroy = async function(req,res){
             //what need to update : we will pull out the comment id from list of comments for which we can use inbuilt function in mongoose
             //pull throws us the id which is matching with the comment id
             let post = Post.findByIdAndUpdate(postId, { $pull: {comments: req.params.id}});
+
+            // CHANGE:: destroy the assciated likes for this comment before deleting the comment
+            await Like.deleteMany({likeable: comment._id, onModel: 'Comment'});
 
             //send the comment id which was deleted back to the views
             if(req.xhr){

@@ -22,6 +22,8 @@ router.use('/posts', require('./posts')); //now every posts in posts router will
 
 router.use('/comments',require('./comments'));//comments router is being required
 
+router.use('/likes', require('./likes'));
+
 router.use('/api', require('./api'));
 
 //we need to export it to be available for index.js

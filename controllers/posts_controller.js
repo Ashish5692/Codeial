@@ -1,6 +1,7 @@
 //need to create a new post,,post belongs to post schema we need to import that
 const Post = require('../models/post');
 const Comment = require('../models/comment');
+const Like = require('../models/like');
 
 //using async await
 module.exports.create = async function(req,res){
@@ -31,6 +32,8 @@ module.exports.create = async function(req,res){
 
     }catch(err){
         req.flash('error', err);
+        // added this to view the error on console as well
+        console.log(err);
         return res.redirect('back');
     }
     
@@ -70,6 +73,11 @@ module.exports.destroy = async function(req,res){
         //post.user is the id of user
         // .id means converting the object id into string
         if(post.user == req.user.id){
+
+            //CHANGE:: delete the associated likes for the post and all its comments like too
+            await Like.deleteMany({likeable:post, onModel: 'Post'});
+            await Like.deleteMany({_id: {$in: post.comments}});
+
             post.remove();
 
             //first import then delete the comment
