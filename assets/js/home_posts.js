@@ -25,7 +25,7 @@
                     //CHANGE :: enable the functionality of the toggle like button on the new post
                     new ToggleLike($('.toggle-like-button', newPost));
 
-                    newNoty({
+                    new Noty({
                         theme: 'relax',
                         text: "Post Published",
                         type: 'success',
