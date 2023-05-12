@@ -8,7 +8,7 @@ const del = require('del');
 
 gulp.task('css',function(done){
     console.log("Minifying CSS");
-    gulp.src('./assets/sass/**/*.scss')    //**  means any folder or subfolder inside it 
+    gulp.src('./assets/scss/**/*.scss')    //**  means any folder or subfolder inside it 
     .pipe(sass()) //passed to sass module for sass to css
     .pipe(cssnano())  //pipe is a function which is calling all these middleware
     .pipe(gulp.dest('./assets.css'));
